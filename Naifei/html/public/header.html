@@ -1,0 +1,46 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<div class="header">
+    <div class="box cf rel">
+        <span class="list-nav wap"><i class="fa">&#xe606;</i></span>
+        <div class="search">
+            <i class="fa bnt-show">&#xe632;</i>
+            <input class="search-txt none" data-url="{:mac_url('vod/search')}" type="text" placeholder="搜索" autocomplete="off">
+        </div>
+        <a href="{$maccms.path}" class="logo"><img src="/template/Naifei/static/img/logo.png" alt="{$maccms.site_name}"></a>
+        <nav class="nav-box">
+            <ul>
+                <li class="menu-item"><a href="/"><i class="fa r3 cor1">&#xe65e;</i><span class="r6">主页</span></a></li>
+                <li class="menu-item rel get-arrow"><a href="/" class="get"><i class="fa r3 cor1">&#xe639;</i><span class="r6">分类</span></a>
+                    <ul class="get-box shadow bj none">
+                        {maccms:type ids="parent" order="asc" by="sort"}
+                        <li><a href="{:mac_url_type($vo)}">{$vo.type_name}</a></li>
+                        {/maccms:type}
+                    </ul>
+                </li>
+                <li class="menu-item rel get-arrow"><a href="/" class="get"><i class="fa r3 cor1">&#xe623;</i><span class="r6">客户端下载</span></a>
+                    <ul class="get-box shadow bj none">
+                        <li><a href="#">安卓手机版</a></li>
+                        <li><a href="#">windows版</a></li>
+                        <li><a href="#">电视TV版</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="{:mac_url('user/favs')}"><i class="fa r3 cor1">&#xe639;</i><span class="r6">我的收藏</span></a></li>
+                <li class="menu-item"><a href="{:mac_url('user/plays')}"><i class="fa r3 cor1">&#xe62c;</i><span class="r6">播放记录</span></a></li>
+                <li class="menu-item"><a href="{:mac_url('gbook/index')}"><i class="fa r3 cor1">&#xe70f;</i><span class="r6">反馈意见</span></a></li>
+                <li class="menu-item rel get-arrow"><a href="/" class="get"><i class="fa r3 cor1">&#xe60a;</i><span class="r6">用户中心</span></a>
+                    <ul class="get-box shadow bj none">
+                        {if condition="$GLOBALS['user']['user_id']" gt 0}
+                        <!--<li><a href=""><i class="fa r3 cor1">&#xe75a;</i>6天后过期</a></li>-->
+                        <li><a class="head-user-out" href="javascript:"><i class="fa r3 cor1">&#xe7cb;</i>退出登录</a></li>
+                        {else/}
+                        <li><a href="{:mac_url('user/login')}"><i class="fa r3 cor1">&#xe7cb;</i>登录账号</a></li>
+                        {/if}
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

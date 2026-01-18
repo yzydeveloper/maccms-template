@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>找回密码 - 个人中心 - {$maccms.site_name}</title>
+    <meta name="keywords" content="个人中心,{$maccms.site_keywords}"/>
+    <meta name="description" content="{$maccms.site_description}"/>
+    {include file="public/top"}
+</head>
+<body>
+<div class="login-page">
+    <div class="container">
+        <div class="top">
+            <div class="user-title">找回密码</div>
+            <div class="desc">一个神奇的网站，你想看的这里都有！</div>
+        </div>
+        <div class="login-main">
+            <div class="login-card">
+                <form class="user-form" action="" method="post" id="fm">
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe652;</i></div>
+                        <input type="text" name="user_name" id="user_name" placeholder="请输入账号" maxlength="30">
+                    </div>
+
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe639;</i></div>
+                        <input type="text" id="user_question" name="user_question" placeholder="请输入找回问题">
+                    </div>
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe639;</i></div>
+                        <input type="text" id="user_answer" name="user_answer" placeholder="请输入找回答案">
+                    </div>
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe62a;</i></div>
+                        <input type="password" name="user_pwd" id="user_pwd" placeholder="请输入新密码" maxlength="20">
+                    </div>
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe62a;</i></div>
+                        <input type="password" name="user_pwd2" id="user_pwd2" placeholder="再次输入新密码" maxlength="20">
+                    </div>
+                    <div class="form-control flex">
+                        <input style="height:39px;" maxlength="4" type="tel" name="verify" id="verify"
+                               placeholder="请输入验证码"/>
+                        <img style="border-radius:6px;" height="45" src="{:mac_url('verify/index')}" id="verify_img"
+                             onclick="this.src=this.src+'?'" title="看不清楚? 换一张！"/>
+                    </div>
+                    <div class="form-control">
+                        <button type="button" id="btn_submit" class="bnt login-btn">重置密码</button>
+                    </div>
+                </form>
+                <div class="flex between">
+                    <a href="{:mac_url('user/login')}">立即登录</a>
+                    <a href="{:mac_url('user/findpass')}">问题找回</a>
+                    <a href="{:mac_url('user/findpass_msg')}?ac=email">邮箱找回</a>
+                    <a href="{:mac_url('user/findpass_msg')}?ac=phone">手机找回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("body").bind('keyup', function (event) {
+            if (event.keyCode == 13) {
+                $('#btnLogin').click();
+            }
+        });
+        $('#btn_submit').click(function () {
+            if ($('#user_name').val() == '') {
+                EC.Pop.Msg('请输入用户！',2000);
+                $("#user_name").focus();
+                return false;
+            }
+            if ($('#user_pwd').val() == '') {
+                EC.Pop.Msg('请输入密码！',2000);
+                $("#user_pwd").focus();
+                return false;
+            }
+            if ($('#verify').val() == '') {
+                EC.Pop.Msg('请输入验证码！',2000);
+                $("#verify").focus();
+                return false;
+            }
+
+            $.ajax({
+                url: "{:mac_url('user/findpass')}",
+                type: "post",
+                dataType: "json",
+                data: $('#fm').serialize(),
+                beforeSend: function () {
+                    $("#btn_submit").val("loading...");
+                },
+                success: function (r) {
+                    if (r.code == 1) {
+                        location.href = "{:mac_url('user/index')}";
+                    } else {
+                        EC.Pop.Msg(r.msg,2000);
+                    }
+                },
+                complete: function () {
+                    $('#verify').click();
+                    $("#btn_submit").val("立即找回");
+                }
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

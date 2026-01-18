@@ -1,0 +1,85 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$maccms.site_name}</title>
+    <meta name="keywords" content="{$maccms.site_keywords}" />
+    <meta name="description" content="{$maccms.site_description}" />
+    {include file="public/top"}
+</head>
+<body>
+{include file="public/header"}
+<div class="slide">
+    <div class="swiper-wrapper">
+        {maccms:vod num="6" type="all" order="desc" by="time" level="9"}
+        <div class="swiper-slide" role="listbox">
+            <div class="bj" style="background-image:url('{:mac_url_img($vo.vod_pic_slide)}')"></div>
+            <div class="flex align-items-center">
+                <div class="box">
+                    <div class="slide-info-box">
+                        <a href="{:mac_url_vod_play($vo,['sid'=>$vo.sid,'nid'=>1])}" class="title">{$vo.vod_name}</a>
+                        <div class="info"><span class="Date">{$vo.vod_year|mac_default="2021"}年</span><span class="Qlty">{if condition="$vo.vod_remarks neq ''"}{$vo.vod_remarks}{elseif condition="$vo.vod_serial gt 0"}第{$vo.vod_serial}集{else /}已完结{/if}</span></div>
+                        <div>
+                            <p>{$vo.vod_blurb|mac_default='暂无简介'}</p>
+                            <p class="hide top10">导演：{$vo.vod_director|mac_default='未知'}</p>
+                            <p class="hide top6">类型：{$vo.vod_lang|mac_default='内详'},{$vo.vod_class|mac_default='未知'},{$vo.vod_area|mac_default="中国"}</p>
+                            <p class="hide top6">演员：{$vo.vod_actor|mac_default='未知'}</p>
+                        </div>
+                        <a href="{:mac_url_vod_play($vo,['sid'=>$vo.sid,'nid'=>1])}" class="TPlay bnt"><i class="fa r6">&#xe600;</i>立即观看</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/maccms:vod}
+    </div>
+</div>
+<div class="box">
+    {maccms:type ids="parent" order="asc" by="sort" id="vo1" key="key1" flag="vod"}
+    <div class="vod-list flex">
+        <div class="left">
+            <div class="top flex between">
+                <h2 class="tim-title"><i class="fa cor1 r6">&#xe648;</i>{$vo1.type_name}</h2>
+                <div class="tim-link"><a href="{:mac_url_type($vo1,[],'show')}" class="tim-button">查看更多</a></div>
+            </div>
+            <ul class="bottom top10 flex wrap">
+                {maccms:vod num="24" type="'.$vo1['type_id'].'" order="desc" by="time"}
+                {include file="vod/list"}
+                {/maccms:vod}
+            </ul>
+        </div>
+        <div class="right">
+            <div class="r-list-box">
+                <div class="title">{$vo1.type_name}榜单</div>
+                <ul>
+                    {maccms:vod num="8" type="'.$vo1['type_id'].'" order="desc" by="hits"}
+                    <li class="rel">
+                        <a href="{:mac_url_vod_play($vo,['sid'=>$vo.sid,'nid'=>1])}" class="tim-link">
+                            <span class="Top">{$key}</span>
+                            <div class="Image fa">
+                                <div class="lazy" data-original="{:mac_url_img($vo.vod_pic)}" style="background-image: url({$maccms.path_tpl}static/img/img-bj-k.png);"></div>
+                            </div>
+                            <div class="Title video-Title">
+                                <div class="title-h">{$vo.vod_name}</div>
+                                <div class="Info">
+                                    <span class="r6">评分：{$vo.vod_douban_score|mac_default=$vo.vod_score}</span>
+                                    <span>{$vo.vod_year|mac_default="2021"}年</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:vod}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {/maccms:type}
+</div>
+{include file="public/foot"}
+</body>
+</html>

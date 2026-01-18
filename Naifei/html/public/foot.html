@@ -1,0 +1,156 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<div class="footer">
+<div class="fixedGroup">
+<!--留言-->
+<div class="fixedGroup-item" onclick="location='/index.php/gbook/index.html'">
+<div class="fixedGroup__cell">
+<span class="fixedGroup__triangle"></span>
+<div>留言</div>
+</div>
+<i class="icon-gbook"></i>
+</div>
+<!--留言-->
+<!--返回顶部-->
+<div class="fixedGroup-item retop go-top-plane" style="display: flex;">
+<div class="fixedGroup__cell">
+<span class="fixedGroup__triangle"></span>
+<div>回到顶部</div>
+</div>
+<i class="icon-top"></i>
+</div>
+</div>
+<script type="text/javascript">  
+    $('.go-top-plane').click(function () {
+        $('html,body').animate({scrollTop: '0px'}, 500);
+    });
+    $(document).scroll(function () {
+        var scroH = $(document).scrollTop();  //滚动高度
+        var viewH = $(window).height();  //可见高度
+        var contentH = $(document).height();  //内容高度
+        if (scroH > 100) {  //距离顶部大于100px时
+            $('.go-top-plane').addClass('go-top-plane-show')
+        } else {
+            $('.go-top-plane').removeClass('go-top-plane-show')
+        }
+        if (contentH - (scroH + viewH) <= 100) {  //距离底部高度小于100px
+        }
+        if (contentH == (scroH + viewH)) {  //滚动条滑到底部啦
+        }
+    });
+
+</script>
+<!--返回顶部-->
+<style>
+.fixedGroup {
+	position:fixed;
+	right:0;
+	bottom:85px;
+	width:34px;
+	z-index:10;
+	box-shadow:0 2px 10px 0 rgb(0 0 0/10%);
+	box-sizing:border-box;
+	border-radius:4px;
+	background-color:#fff
+}
+.fixedGroup .fixedGroup-item {
+	position:relative;
+	font-size:20px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	line-height:36px;
+	height:36px;
+	cursor:pointer
+}
+.fixedGroup .retop {
+	display:none
+}
+.fixedGroup .fixedGroup-item i {
+	display:block;
+	padding:4px;
+	box-sizing:border-box;
+	width:28px;
+	height:28px;
+	border-radius:4px
+}
+.fixedGroup .fixedGroup-item::after {
+	content:"";
+	position:absolute;
+	right:50%;
+	bottom:0;
+	width:20px;
+	height:1px;
+	background-color:#0c0d0f0f;
+	transform:translateX(50%)
+}
+.fixedGroup .fixedGroup-item:last-child::after {
+	content:none
+}
+.fixedGroup .fixedGroup-item:hover i {
+	background-color:#f5f5f5
+}
+.fixedGroup .fixedGroup-item .fixedGroup__cell {
+	display:none;
+	font-size:15px;
+	position:absolute;
+	top:2px;
+	right:54px;
+	padding:0 12px;
+	color:#fff;
+	font-size:14px;
+	border-radius:2px;
+	background-color:#4d4d4d;
+	min-width:52px;
+	min-height:32px;
+	line-height:32px;
+	animation:fadeInOut .2s ease-out 0s forwards;
+	transform:all .2s;
+	white-space:nowrap
+}
+.fixedGroup .fixedGroup-item:hover .fixedGroup__cell {
+	display:block
+}
+@keyframes fadeInOut {
+	0% {
+	transform:scale(.5)
+}
+100% {
+	transform:scale(1)
+}
+}.fixedGroup .fixedGroup-item .fixedGroup__cell .fixedGroup__triangle {
+	position:absolute;
+	top:12px;
+	right:-5px;
+	width:10px;
+	height:10px;
+	background-color:#4d4d4d;
+	border-top-right-radius:2px;
+	transform:rotate(45deg)
+}
+</style>    
+    
+    
+    
+    <div class="box cf">
+        <div class="sit-text">
+            <div class="tim-title">{$maccms.site_name}</div>
+            <p>该站为学习演示使用，如有侵权请邮箱：{$maccms.site_email},本站保证24小时以内清除。</p>
+        </div>
+        <div class="sit-text">
+            <div class="tim-title">交流求片</div>
+            <p>站长QQ:{$maccms.site_qq} </p>
+        </div>
+        <div class="sit-text">
+            <div class="tim-title">友情链接</div>
+            <ul class="flex wrap">
+                {maccms:link num="10" type="all" order="asc" by="sort"}
+                <li><a href="{$vo.link_url}" target="_blank">{$vo.link_name}</a></li>
+                {/maccms:link}
+            </ul>
+        </div>
+        <div class="none">{$maccms.site_tj}</div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>在线播放{$obj.vod_name} {$obj['vod_play_list'][$param['sid']]['urls'][$param['nid']]['name']} - 高清资源 - {$maccms.site_name}</title>
+    <meta name="keywords" content="{$obj.vod_name}{$obj['vod_play_list'][$param['sid']]['urls'][$param['nid']]['name']}免费在线观看,{$obj.vod_name}剧情介绍" />
+    <meta name="description" content="{$obj.vod_name}{$obj['vod_play_list'][$param['sid']]['urls'][$param['nid']]['name']}免费在线观看,{$obj.vod_name}剧情介绍" />
+    {include file="public/top"}
+</head>
+<body>
+{include file="public/header"}
+<div class="box">
+    <div class="vod-list flex type-wrap" style="margin-top:7.5rem;">
+        <div class="left">
+            <div id="bofang_box">
+                {$player_data}
+                {$player_js}
+            </div>
+            <!--影片信息-->
+            <div class="play-detail">
+                <div class="top">
+                    <div class="title-head top10">
+                        <h1 class="tim-title">{$obj.vod_name}-{$obj['vod_play_list'][$param['sid']]['urls'][$param['nid']]['name']}</h1>
+                        <p class="time">{if condition="$obj.vod_remarks neq ''"}{$obj.vod_remarks}{elseif condition="$obj.vod_serial gt 0"}第{$obj.vod_serial}集{else /}已完结{/if}</p>
+                    </div>
+                    <a href="javascript:" class="collection bnt" data-type="2" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}"><i class="fa r6">&#xe639;</i>收藏</a>
+                </div>
+                <div class="top10">
+                    <p>评分：{$obj.vod_douban_score|mac_default=$obj.vod_score}分</p>
+                    <p>导演：{$obj.vod_director|mac_url_create='director'}</p>
+                    <p>主演：{$obj.vod_actor|mac_url_create='actor'}</p>
+                    <p>类型：{$obj.vod_class|mac_url_create='class'}<span class="r6">年份：{$obj.vod_year|mac_url_create='year'}</span></p>
+                    <p> 简介：{$obj.vod_content|mac_filter_html}</p>
+                </div>
+            </div>
+            <!--相关影片-->
+            {if condition="$obj.vod_rel_vod==true"}
+            <div class="top flex between top20">
+                <h2 class="tim-title font22">相关推荐</h2>
+            </div>
+            <ul class="bottom top20 flex wrap">
+                {maccms:vod num="30" not="'.$obj['vod_id'].'" rel="'.$obj['vod_rel_vod'].'" order="desc" by="in"}
+                {include file="vod/list"}
+                {/maccms:vod}
+            </ul>
+            {else/}
+            <div class="top flex between top20">
+                <h2 class="tim-title font22">推荐</h2>
+            </div>
+            <ul class="bottom top20 flex wrap">
+                {maccms:vod num="16" type="current" order="desc" by="hits"}
+                {include file="vod/list"}
+                {/maccms:vod}
+            </ul>
+            {/if}
+        </div>
+        <div class="right vod-type r300">
+            <div class="r-list-box rel">
+                <div class="title">分集目录</div>
+                <div class="anthology flex nav-swiper">
+                    <div class="swiper-wrapper">
+                        {maccms:foreach name="obj.vod_play_list" id="vo"}
+                        <a class="swiper-slide {if condition='$param.sid eq $key'}on{/if}">{$vo.player_info.show}{if$vo.url_count>1}<small>{$vo.url_count}</small>{/if}</a>
+                        {/maccms:foreach}
+                    </div>
+                </div>
+                <div class="anthology-list">
+                    {maccms:foreach name="obj.vod_play_list" id="vo" key="key"}
+                    <ul {if condition='$param.sid eq $key'}style="display:block"{/if}>
+                        {maccms:foreach name="vo.urls" id="vo2" key="key2"}
+                        <li class="rel {if condition='$param.sid eq $vo.sid && $param.nid eq $vo2.nid'}on{/if}">
+                            <a href="{:mac_url_vod_play($obj,['sid'=>$vo.sid,'nid'=>$vo2.nid])}" class="tim-link">
+                                <div class="Title video-Title">
+                                    <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo2.name}</div>
+                                </div>
+                            </a>
+                        </li>
+                        {/maccms:foreach}
+                    </ul>
+                    {/maccms:foreach}
+                </div>
+            </div>
+            <div class="vod-report-box">
+                <a href="javascript:" class="vod-report" data-url="编号【{$obj.vod_id}】名称【{$obj.vod_name}】不能观看请检查修复，页面地址" data-id="{$obj.vod_id}">报错</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="none">
+    <span class="ds-log-set" data-type="4" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}" data-sid="{$param.sid}" data-nid="{$param.nid}"></span>
+    <span class="ds-hits" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}" data-type="hits"></span>
+    <span class="ds-hits" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}" data-type="hits_day"></span>
+    <span class="ds-hits" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}" data-type="hits_week"></span>
+    <span class="ds-hits" data-mid="{$maccms.mid}" data-id="{$obj.vod_id}" data-type="hits_month"></span>
+</div>
+{include file="public/foot"}
+</body>
+</html>

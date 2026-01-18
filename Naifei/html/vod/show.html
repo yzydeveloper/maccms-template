@@ -1,0 +1,90 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>最新{$obj.type_title}-推荐{$obj.type_title}-第{$param.page}页 - {$maccms.site_name}</title>
+    <meta name="keywords" content="{$obj.type_key}" />
+    <meta name="description" content="{$obj.type_des}" />
+    {include file="public/top"}
+</head>
+<body>
+{include file="public/header"}
+<div class="box">
+    <div class="vod-list flex type-wrap" style="margin-top:7.5rem;">
+        <div class="left">
+            <ul class="bottom top10 flex wrap">
+                {maccms:vod num="24" paging="yes" pageurl="vod/show" type="current" order="desc" by="time"}
+                {include file="vod/list"}
+                {/maccms:vod}
+            </ul>
+            {include file="public/paging"}
+        </div>
+        <div class="right vod-type">
+            <div class="r-list-box">
+                <div class="title">分类目录</div>
+                <ul>
+                    {if$obj.childids||$obj.parent.childids}
+                    {if$obj.parent.childids}
+                    {maccms:type ids="'.$GLOBALS['type_pid'].'" order="asc" by="sort"}
+                    {maccms:type parent="'.$vo['type_id'].'" order="asc" by="sort" id="vo1" key="key1"}
+                    <li class="rel">
+                        <a href="{:mac_url_type($vo1,[],'show')}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo1.type_name}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:type}
+                    {/maccms:type}
+                    {else}
+                    {maccms:type ids="'.$GLOBALS['type_id'].'" order="asc" by="sort"}
+                    {maccms:type parent="'.$vo['type_id'].'" order="asc" by="sort" id="vo1" key="key1"}
+                    <li class="rel">
+                        <a href="{:mac_url_type($vo1,[],'show')}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo1.type_name}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:type}
+                    {/maccms:type}
+                    {/if}
+                    {/if}
+
+                    {if$obj.parent.type_extend.class!=""||$obj.type_extend.class!=""}
+                    {empty name="$obj.type_extend.class"}
+                    {maccms:foreach name=":explode(',',$obj.parent.type_extend.class)" id="vo2" key="key2"}
+                    <li class="rel">
+                        <a href="{:mac_url_type($obj,['area'=>$param['area'],'lang'=>$param['lang'],'year'=>$param['year'],'level'=>$param['level'],'letter'=>$param['letter'],'state'=>$param['state'],'tag'=>$param['tag'],'class'=>$vo2,'version'=>$param['version'],'state'=>$param['state'],'order'=>$param['order'],'by'=>$param['by'] ],'show')}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo2}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:foreach}
+                    {else /}
+                    {maccms:foreach name=":explode(',',$obj.type_extend.class)" id="vo2" key="key2"}
+                    <li class="rel">
+                        <a href="{:mac_url_type($obj,['area'=>$param['area'],'lang'=>$param['lang'],'year'=>$param['year'],'level'=>$param['level'],'letter'=>$param['letter'],'state'=>$param['state'],'tag'=>$param['tag'],'class'=>$vo2,'version'=>$param['version'],'state'=>$param['state'],'order'=>$param['order'],'by'=>$param['by'] ],'show')}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo2}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:foreach}
+                    {/empty}
+                    {/if}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/foot"}
+</body>
+</html>

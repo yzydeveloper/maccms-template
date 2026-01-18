@@ -1,0 +1,48 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$param.wd}{$param.actor}{$param.director}{$param.area}{$param.lang}{$param.year}{$param.class}搜索结果 - {$maccms.site_name}</title>
+    <meta name="keywords" content="{$param.wd}{$param.actor}{$param.director}{$param.area}{$param.lang}{$param.year}{$param.class}搜索结果" />
+    <meta name="description" content="{$param.wd}{$param.actor}{$param.director}{$param.area}{$param.lang}{$param.year}{$param.class}搜索结果" />
+    {include file="public/top"}
+</head>
+<body>
+{include file="public/header"}
+<div class="box">
+    <div class="vod-list flex type-wrap" style="margin-top:7.5rem;">
+        <div class="left">
+            <ul class="bottom top10 flex wrap">
+                {maccms:vod num="24" paging="yes" pageurl="vod/search" order="desc" by="time"}
+                {include file="vod/list"}
+                {/maccms:vod}
+            </ul>
+            {include file="public/paging"}
+        </div>
+        <div class="right vod-type">
+            <div class="r-list-box">
+                <div class="title">猜你喜欢</div>
+                <ul>
+                    {maccms:vod num="6" type="current" order="desc" by="hits_week"}
+                    <li class="rel">
+                        <a href="{:mac_url_vod_play($vo,['sid'=>$vo.sid,'nid'=>1])}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo.vod_name}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:vod}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/foot"}
+</body>
+</html>

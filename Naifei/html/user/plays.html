@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>播放记录 - 个人中心 - {$maccms.site_name}</title>
+    <meta name="keywords" content="个人中心,{$maccms.site_keywords}"/>
+    <meta name="description" content="{$maccms.site_description}"/>
+    {include file="public/top"}
+</head>
+<body>
+{include file="public/header"}
+<div class="box">
+    <div class="vod-list flex type-wrap" style="margin-top:7.5rem;">
+        <div class="left">
+            <div class="operation flex">
+                <a href="javascript:" onclick="EC.CheckBox.All('ids[]');">全选</a>
+                <a href="javascript:" onclick="EC.CheckBox.Other('ids[]');">反选</a>
+                <a href="javascript:" id="btnDel">删除</a>
+                <a href="javascript:" id="btnClear">清空</a>
+            </div>
+            <ul class="bottom top10 flex wrap">
+                {volist name="list" id="vo"}
+                <li class="l-list-box rel">
+                    <a href="{$vo.data.link}" class="tim-link">
+                        <div class="Image">
+                            <div class="lazy" data-original="{:mac_url_img($vo.data.pic)}" style="background-image: url({$maccms.path_tpl}static/img/img-bj-k.png);"></div>
+                            <div class="tim-tag">
+                                <span class="b">{$vo.data.type.type_name}</span>
+                            </div>
+                            <input class="del" name="ids[]" type="checkbox" value="{$vo.ulog_id}"/>
+                        </div>
+                        <h2 class="tim-title">{$vo.data.name}</h2>
+                    </a>
+                </li>
+                {/volist}
+            </ul>
+            {include file="public/paging"}
+        </div>
+        <div class="right vod-type">
+            <div class="r-list-box">
+                <div class="title">猜你喜欢</div>
+                <ul>
+                    {maccms:vod num="6" type="current" order="desc" by="hits_week"}
+                    <li class="rel">
+                        <a href="{:mac_url_vod_play($vo,['sid'=>$vo.sid,'nid'=>1])}" class="tim-link">
+                            <div class="Title video-Title">
+                                <div class="title-h"><i class="fa r6">&#xe600;</i>{$vo.vod_name}</div>
+                            </div>
+                        </a>
+                    </li>
+                    {/maccms:vod}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function delData(ids, all) {
+        var msg = '删除';
+        if (all == 1) {
+            msg = '清空';
+        }
+        if (confirm('确定要' + msg + '记录吗')) {
+            $.post("{:url('user/ulog_del')}", {ids: ids, type: 4, all: all}, function (data) {
+                if (data.code == '1') {
+                    EC.Pop.Msg('删除成功',2000);
+                    location.reload();
+                } else {
+                    EC.Pop.Msg('删除失败：' + data.msg,2000);
+                }
+            }, 'json')
+        }
+    }
+
+    $("#btnClear").click(function () {
+        delData('', 1);
+    });
+    $("#btnDel").click(function () {
+        var ids = EC.CheckBox.Ids('ids[]');
+        if (ids == '') {
+            EC.Pop.Msg("请至少选择一个数据",2000);
+            return;
+        }
+        delData(ids, 0);
+    });
+
+    $(".face").imageUpload({
+        formAction: "{:url('user/portrait')}",
+        inputFileName: 'file',
+        browseButtonValue: '',
+        browseButtonClass: 'btn btn-default btn-xs mxui-user-alter mxui-part-roun mxui-icon-font icon-xiugai',
+        automaticUpload: true,
+        hideDeleteButton: true,
+        hover: true
+    })
+    $(".jQuery-image-upload-controls").mouseenter(function () {
+        $(".jQuery-image-upload-controls").css("display", "block");
+    });
+    $(".jQuery-image-upload-controls").mouseleave(function () {
+        $(".jQuery-image-upload-controls").css("display", "none");
+    });
+    $(".face").on("imageUpload.uploadFailed", function (ev, err) {
+        EC.Pop.Msg(err,2000);
+    });
+</script>
+{include file="public/foot"}
+</body>
+</html>

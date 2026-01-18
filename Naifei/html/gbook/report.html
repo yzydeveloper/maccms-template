@@ -1,0 +1,25 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<div class="mac-pop">
+    <div class="pop-bj"></div>
+    <div class="pop-box cor2">
+        <div class="rel">
+            <h2 class="top20 font22">数据报错</h2>
+            <a href="javascript:" class="pop_close fa">&#xeaf2;</a>
+        </div>
+        <form class="gbook-form" data-login="{$gbook.login}" data-verify="{$gbook.verify}">
+            <input type="hidden" name="gbook_rid" value="3191">
+            <p class="cor3 top10" style="color:#999">请输入报错内容：</p>
+            <textarea class="gbook-content txt cor2 top10" name="gbook_content">{$param.name}</textarea>
+            <div class="msg-send">
+                {if condition="$gbook.verify eq 1"}
+                <img class="report-verify" src="{:mac_url('verify/index')}" onClick="this.src+='?'" >
+                {/if}
+                <input class="form-control verify" type="text" id="verify" name="verify" placeholder="验证码">
+                <button type="button" class="gbook-submit btn-sub bnt" style="margin-top:0">提交留言</button>
+            </div>
+        </form>
+    </div>
+</div>

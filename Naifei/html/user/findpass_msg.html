@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>找回密码 - 个人中心 - {$maccms.site_name}</title>
+    <meta name="keywords" content="个人中心,{$maccms.site_keywords}"/>
+    <meta name="description" content="{$maccms.site_description}"/>
+    {include file="public/top"}
+</head>
+<body>
+<div class="login-page">
+    <div class="container">
+        <div class="top">
+            <div class="user-title">{$param['ac_text']}找回密码</div>
+            <div class="desc">{$maccms.site_name}</div>
+        </div>
+        <div class="login-main">
+            <div class="login-card">
+                <form class="user-form" action="" method="post" id="fm">
+                    <input type="hidden" name="ac" value="{$param['ac']}">
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe6df;</i></div>
+                        <input type="text" id="to" name="to" placeholder="请输入{$param['ac_text']}" maxlength="30">
+                    </div>
+                    <div class="form-control flex">
+                        <input style="height:39px;" maxlength="4" type="tel" name="verify" id="verify"
+                               placeholder="请输入验证码"/>
+                        <img style="border-radius:6px;" height="45" src="{:mac_url('verify/index')}" id="verify_img"
+                             onclick="this.src=this.src+'?'" title="看不清楚? 换一张！"/>
+                    </div>
+                    <div class="form-control">
+                        <button type="button" id="btn_send" class="bnt login-btn">发送验证码</button>
+                    </div>
+                </form>
+                <form class="user-form" action="" method="post" id="fm2">
+                    <input type="hidden" name="ac" value="{$param['ac']}">
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe6df;</i></div>
+                        <input type="text" id="code" name="code" placeholder="请输入验证码" maxlength="30">
+                    </div>
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe62a;</i></div>
+                        <input type="password" name="user_pwd" id="user_pwd" placeholder="请输入新密码" maxlength="20">
+                    </div>
+                    <div class="form-control">
+                        <div class="r6"><i class="fa">&#xe62a;</i></div>
+                        <input type="password" name="user_pwd2" id="user_pwd2" placeholder="再次输入新密码" maxlength="20">
+                    </div>
+                    <div class="form-control">
+                        <button type="button" id="btn_submit" class="bnt login-btn">重置密码</button>
+                    </div>
+                </form>
+                <div class="flex between">
+                    <a href="{:mac_url('user/login')}">立即登录</a>
+                    <a href="{:mac_url('user/findpass')}">问题找回</a>
+                    <a href="{:mac_url('user/findpass_msg')}?ac=email">邮箱找回</a>
+                    <a href="{:mac_url('user/findpass_msg')}?ac=phone">手机找回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("body").bind('keyup', function (event) {
+            if (event.keyCode == 13) {
+                $('#btnLogin').click();
+            }
+        });
+        $('#btn_send').click(function () {
+            if ($('#to').val() == '') {
+                EC.Pop.Msg('请输入{$param["ac_text"]}！',2000);
+                $("#to").focus();
+                return false;
+            }
+
+            $.ajax({
+                url: "{:mac_url('user/findpass_msg')}",
+                type: "post",
+                dataType: "json",
+                data: $('#fm').serialize(),
+                beforeSend: function () {
+                    $("#btn_send").val("loading...");
+                },
+                success: function (r) {
+                    EC.Pop.Msg(r.msg,2000);
+                },
+                complete: function () {
+                    $('#verify').click();
+                    $("#btn_send").val("发送邮件");
+                }
+            });
+        });
+
+        $('#btn_submit').click(function () {
+            if ($('#to').val() == '') {
+                EC.Pop.Msg('请输入{$param["ac_text"]}',2000);
+                $("#to").focus();
+                return false;
+            }
+            if ($('#code').val() == '') {
+                EC.Pop.Msg('请输入验证码！',2000);
+                $("#code").focus();
+                return false;
+            }
+            if ($('#user_pwd').val() == '') {
+                EC.Pop.Msg('请输入新密码！',2000);
+                $("#user_pwd").focus();
+                return false;
+            }
+            if ($('#user_pwd2').val() == '') {
+                EC.Pop.Msg('请输入确认密码！',2000);
+                $("#user_pwd2").focus();
+                return false;
+            }
+            if ($('#user_pwd').val() != $('#user_pwd2').val()) {
+                EC.Pop.Msg('二次密码不一致！',2000);
+                $("#user_pwd2").focus();
+                return false;
+            }
+
+            var data = {
+                ac: '{$param["ac"]}',
+                to: $('#to').val(),
+                code: $('#code').val(),
+                user_pwd: $('#user_pwd').val(),
+                user_pwd2: $('#user_pwd2').val()
+            };
+            $.ajax({
+                url: "{:mac_url('user/findpass_reset')}",
+                type: "post",
+                dataType: "json",
+                data: data,
+                beforeSend: function () {
+                    $("#btn_submit").val("loading...");
+                },
+                success: function (r) {
+                    EC.Pop.Msg(r.msg,2000);
+                },
+                complete: function () {
+                    $("#btn_submit").val("重置密码");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!--
+觅知博客www.98dou.cn
+更新日期：2023年5月6日14:48:23
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>留言板</title>
+    {include file="public/top"}
+    <script>
+        $(function(){
+            EC.Gbook.Login = {$gbook.login};
+            EC.Gbook.Verify = {$gbook.verify};
+        });
+    </script>
+</head>
+<body>
+{include file="public/header"}
+<div class="box">
+    <div class="message cor2" style="margin-top:7.5rem;">
+        <h2 class="top20 font22">要留言</h2>
+        <div class="msg-content">
+            <form class="gbook-form">
+                <div class="msg-s">
+                    <textarea name="gbook_content" class="gbook-content txt top20 cor2" id="uinput" cols="30" rows="7" placeholder="有事没事说两句...">{$param.name}</textarea>
+                    <div class="msg-send">
+                        {if condition="$gbook.verify eq 1"}
+                        <img id="verify_img" src="{:url('verify/index')}" onClick="this.src=this.src+'?'"  alt="单击刷新" height="34" />
+                        <input class="form-control verify" type="text" id="verify" name="verify" placeholder="验证码" />
+                        {/if}
+                        <button type="button" class="gbook-submit bnt" style="margin-top:0">提交留言</button>
+                    </div>
+                </div>
+            </form>
+            <div class="msg-wrap">
+                <h2 class="font22">网友留言</h2>
+                {maccms:gbook num="10" paging="yes" order="desc" by="id"}
+                <div class="info">
+                    <div class="uname">{$vo.gbook_name}</div>
+                    <div class="content">{$vo.gbook_content}</div>
+                    {if condition="$vo.gbook_reply_time gt 0"}
+                    <font  class="glyreply">管理员回复：{$vo.gbook_reply}</font>
+                    {/if}
+                    <p class="text-muted">{$vo.gbook_time|date='Y-m-d H:i:s',###}</p>
+                </div>
+                {/maccms:gbook}
+            </div>
+        </div>
+    </div>
+    {include file="public/paging"}
+</div>
+{include file="public/foot"}
+</body>
+</html>
